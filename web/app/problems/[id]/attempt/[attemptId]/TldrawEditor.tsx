@@ -82,7 +82,7 @@ export function TldrawEditor({
     const t = setTimeout(() => {
       try {
         if (disabled) editor.zoomToFit({ animation: { duration: 0 } });
-      } catch (_) {}
+      } catch (_) { }
     }, 50);
     return () => clearTimeout(t);
   }, [isVisible, disabled]);
@@ -123,7 +123,7 @@ export function TldrawEditor({
           setTimeout(() => {
 
             if (disabled) {
-               try { editor.zoomToFit({ animation: { duration: 0 } }); } catch (_) {}
+              try { editor.zoomToFit({ animation: { duration: 0 } }); } catch (_) { }
             }
           }, 100);
         }}

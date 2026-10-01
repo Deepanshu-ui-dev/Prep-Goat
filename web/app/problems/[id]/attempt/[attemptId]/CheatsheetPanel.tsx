@@ -29,9 +29,9 @@ export function CheatsheetPanel() {
 
   if (isLoading) {
     return (
-      <div className="text-left mt-8 pt-6 border-t border-white/10">
+      <div className="text-left mt-8 pt-6 border-t border-white/[0.08]">
         <h3 className="text-[10px] font-bold text-white/50 uppercase tracking-widest font-mono flex items-center gap-2 mb-4">
-          <BookOpen className="w-3.5 h-3.5 text-[#ff6b35]" />
+          <BookOpen className="w-3.5 h-3.5 text-[#FF7726]" />
           Cheatsheets
         </h3>
         <div className="flex items-center gap-2 text-sm text-white/50">
@@ -44,9 +44,9 @@ export function CheatsheetPanel() {
   if (paths.length === 0) return null;
 
   return (
-    <div className="text-left mt-8 pt-6 border-t border-white/10">
+    <div className="text-left mt-8 pt-6 border-t border-white/[0.08]">
       <h3 className="text-[10px] font-bold text-white/50 uppercase tracking-widest font-mono flex items-center gap-2 mb-4">
-        <BookOpen className="w-3.5 h-3.5 text-[#ff6b35]" />
+        <BookOpen className="w-3.5 h-3.5 text-[#FF7726]" />
         Cheatsheets
       </h3>
 
@@ -57,15 +57,15 @@ export function CheatsheetPanel() {
             <ul className="space-y-2">
               {path.items.map((item: LearningPathItem) => (
                 <li key={item.id}>
-                  <Link 
+                  <Link
                     href={`/resources/cheatsheets/${item.resource.slug}`}
                     target="_blank"
-                    className="group flex items-center justify-between p-2 rounded bg-white/5 border border-white/10 hover:border-[#ff6b35]/50 transition-colors"
+                    className="group flex items-center justify-between p-2 rounded bg-white/[0.04] border border-white/[0.08] hover:border-[#FF5500]/50 transition-colors"
                   >
                     <span className="text-xs text-white/80 group-hover:text-white truncate pr-2">
                       {item.resource.title}
                     </span>
-                    <BookOpen className="w-3.5 h-3.5 text-white/30 group-hover:text-[#ff6b35] shrink-0" />
+                    <BookOpen className="w-3.5 h-3.5 text-white/30 group-hover:text-[#FF7726] shrink-0" />
                   </Link>
                 </li>
               ))}

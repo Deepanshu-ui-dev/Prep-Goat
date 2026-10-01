@@ -1,7 +1,15 @@
-const { Pool } = require('pg');
 require('dotenv/config');
+const { Pool } = require('pg');
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+const connectionString = process.env.DATABASE_URL;
+const useSsl =
+  process.env.DATABASE_SSL === 'true' ||
+  /sslmode=require|neon\.tech/i.test(connectionString || '');
+
+const pool = new Pool({
+  connectionString,
+  ...(useSsl ? { ssl: { rejectUnauthorized: false } } : {}),
+});
 
 async function run() {
   const res = await pool.query('SELECT COUNT(*) FROM "Problem"');
@@ -13,4 +21,4 @@ async function run() {
   pool.end();
 }
 
-run();
+run().catch(console.error);

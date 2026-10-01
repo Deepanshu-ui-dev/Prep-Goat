@@ -1,93 +1,207 @@
 "use client";
 
-import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { motion, Variants } from "framer-motion";
 
+import { authClient } from "@/lib/auth-client";
+import { EvaluationSection } from "@/components/EvaluationSection";
+import { FAQSection } from "@/components/FAQSection";
+import { FooterCTA } from "@/components/Footercta";
 import { Navbar } from "@/components/Navbar";
-import { ArrowUpRight } from "lucide-react";
-import { Magnetic } from "@/components/Magnetic";
+import { ProblemBankSection } from "@/components/ProblemBankSection";
+import { ProofBentoGrid } from "@/components/ProofBentoGrid";
+import { RecognitoHero } from "@/components/RecognitoHero";
+import { TrackDemo } from "@/components/TrackDemo";
+import { TrustMarquee } from "@/components/TrustMarquee";
+
+interface WorkflowStep {
+  step: string;
+  title: string;
+  description: string;
+  tag: string;
+}
+
+const WORKFLOW_STEPS: ReadonlyArray<WorkflowStep> = [
+  {
+    step: "01",
+    title: "Select a Canonical Problem",
+    description:
+      "From sliding-window rate limiters to multi-region video transcoding, pick a problem filtered by target company and tier.",
+    tag: "CURATED SPEC",
+  },
+  {
+    step: "02",
+    title: "Whiteboard or Code",
+    description:
+      "Construct architecture topologies on an infinite canvas with tldraw, or author thread-safe classes in our TypeScript IDE.",
+    tag: "DUAL WORKBENCH",
+  },
+  {
+    step: "03",
+    title: "Automated L6 Evaluation",
+    description:
+      "Our evaluation engine executes failure-mode simulations, audits thread-safety race hazards, and flags SOLID violations.",
+    tag: "STRESS TEST",
+  },
+  {
+    step: "04",
+    title: "Diff Against Gold Standard",
+    description:
+      "Inspect the canonical Staff-engineer solution. Conduct an interactive node-by-node diff to eliminate conceptual gaps.",
+    tag: "GAP RESOLUTION",
+  },
+];
+
+// Motion Variants defined outside render loop to prevent recalculations
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const containerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const stepVariants: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
 export default function Home() {
   const { data: session } = authClient.useSession();
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white selection:bg-white/20 flex flex-col font-sans overflow-hidden">
+    <div className="bg-[#070606] text-[#F3F3F3] font-sans overflow-x-hidden min-h-screen film-grain">
+      {/* Sticky Navigation */}
+      <Navbar session={session} />
 
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/Image(2).png"
-          alt="Background"
-          fill
-          priority
-          className="object-cover object-center"
-        />
-        {/* Dark Overlay to reduce shine and make text pop */}
-        <div className="absolute inset-0 bg-[#0a0a0a]/20" />
-        {/* Grain Overlay */}
+      {/* Hero Section */}
+      <RecognitoHero />
+
+      {/* Brand Trust Ticker */}
+      <TrustMarquee />
+
+      {/* Bento Grid Proof */}
+      <ProofBentoGrid />
+
+      {/* Live Product Track Demos */}
+      <TrackDemo />
+
+      {/* AI Evaluation Section */}
+      <EvaluationSection />
+
+      {/* Curated Problem Bank */}
+      <ProblemBankSection />
+
+      {/* Interview Lifecycle Workflow */}
+      <section
+        id="methodology"
+        className="border-t border-white/[0.06] bg-[#060505]/70 py-24 relative overflow-hidden"
+      >
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.08]"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%221.5%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%221%22/%3E%3C/svg%3E")' }}
+          className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none opacity-[0.08] blur-[110px]"
+          style={{
+            background:
+              "radial-gradient(circle, #FF5500 0%, #A51700 60%, transparent 80%)",
+          }}
         />
-        {/* Subtle bottom fade to blend with the logo band */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-80" />
-      </div>
 
-      <Navbar />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={headerVariants}
+            className="max-w-2xl mx-auto mb-16 text-center"
+          >
+            <span className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-[#FF7726] bg-[#FF5500]/10 border border-[#FF5500]/25 px-4 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse" />
+              METHODOLOGY
+            </span>
+            <h2 className="mt-5 text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-[1.15] line-clamp-2">
+              From problem to postmortem <span className="text-white/30">in four steps.</span>
+            </h2>
+            <p className="mt-4 text-[#9E9A94] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+              A structured loop that mirrors how senior engineers approach
+              production incidents — not how candidates blindly memorize answers.
+            </p>
+          </motion.div>
 
-      {/* Hero Content */}
-      <main className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-20 lg:px-32 max-w-7xl w-full mb-12">
-        <div className="space-y-6 max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl md:text-[3.5rem] font-mono uppercase text-white leading-[1.1] tracking-tight font-semibold" style={{ textShadow: '0 4px 24px rgba(0,0,0,0.5)' }}>
-            Find clarity in complex system design
-          </h1>
-          <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-2xl pr-12 font-medium" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
-            Your all-in-one destination for mastering System Design. Practice with gold-standard problems, access curated resources, and level up with real-time feedback.
-          </p>
-
-          <div className="pt-4 flex flex-wrap items-center gap-4">
-            <Magnetic>
-              <Link
-                href="/problems"
-                className="inline-flex items-center justify-center px-7 py-3.5 bg-[#1a1a1a]/80 hover:bg-black/90  text-white text-sm font-semibold transition-colors border border-white/10 backdrop-blur-md"
+          <motion.ol
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={containerVariants}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0 m-0"
+          >
+            {WORKFLOW_STEPS.map((s, idx) => (
+              <motion.li
+                key={s.step}
+                variants={stepVariants}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between group relative overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.5)]"
               >
-                Browse Problems
-              </Link>
-            </Magnetic>
-            {!session && (
-              <Magnetic>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center px-5 py-3 bg-white hover:bg-white/90 text-black text-sm font-semibold transition-colors shadow-lg group"
-                >
-                  Sign in
-                  <ArrowUpRight className="w-4 h-4 ml-1.5 opacity-80 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Link>
-              </Magnetic>
-            )}
-          </div>
-        </div>
-      </main>
+                {/* CSS Hover Beam Effect (Performant off-thread CSS transition) */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF5500] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      {/* Logo band at the bottom */}
-      <div className="relative z-10 w-full bg-[#0a0a0a] border-t border-white/5">
-        <div className="flex flex-wrap items-center justify-center sm:justify-between px-8 py-3 gap-8 max-w-7xl mx-auto opacity-40 grayscale">
-          <span className="font-semibold tracking-wider text-sm flex items-center gap-2">
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22H22L12 2Z" /></svg> google
-          </span>
-          <span className="font-bold tracking-[0.2em] text-sm text-zinc-300">META</span>
-          <span className="font-bold tracking-wider text-sm flex items-center gap-1">
-            netflix
-          </span>
-          <span className="font-bold tracking-tighter text-sm flex items-center gap-1">amazon</span>
-          <span className="font-bold tracking-wider text-sm">microsoft</span>
-          <span className="font-bold tracking-widest text-sm">UBER</span>
-          <span className="font-bold tracking-widest text-sm">stripe</span>
-        </div>
-      </div>
+                {/* Corner Glow */}
+                <div className="absolute -bottom-12 -right-12 w-36 h-36 rounded-full bg-[#FF5500]/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-xl bg-[#FF5500]/15 border border-[#FF5500]/25 flex items-center justify-center font-mono text-sm font-extrabold text-[#FF7726] group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(255,85,0,0.4)] transition-all">
+                        {s.step}
+                      </span>
+                    </div>
+                    <span className="text-[9px] font-mono text-white/25 uppercase tracking-[0.15em] bg-white/[0.04] px-2 py-0.5 rounded-md flex items-center gap-1">
+                      <span className="w-1 h-1 rounded-full bg-[#FF5500] opacity-0 group-hover:opacity-100 transition-opacity animate-ping" />
+                      {s.tag}
+                    </span>
+                  </div>
+
+                  <h3 className="text-[15px] font-bold text-white group-hover:text-[#FF7726] transition-colors duration-300 leading-snug mb-3">
+                    {s.title}
+                  </h3>
+                  <p className="text-[13px] text-[#8E8A85] leading-relaxed">
+                    {s.description}
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/[0.05] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-white/25">
+                    Step {idx + 1} of {WORKFLOW_STEPS.length}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="text-[#FF5500]/50 group-hover:text-[#FF7726] group-hover:translate-x-1 transition-all"
+                  >
+                    →
+                  </span>
+                </div>
+              </motion.li>
+            ))}
+          </motion.ol>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
+
+      {/* Final CTA & Footer */}
+      <FooterCTA />
     </div>
   );
 }

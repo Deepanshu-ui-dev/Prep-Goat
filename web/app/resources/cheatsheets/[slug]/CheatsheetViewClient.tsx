@@ -14,10 +14,10 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
     .map(h => h.replace(/^##\s+/, ''));
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] font-sans text-white selection:bg-white/20">
+    <div className="min-h-screen bg-[#070606] font-sans text-white selection:bg-white/20">
 
       {/* ── Sticky top bar ──────────────────────────────────── */}
-      <div className="sticky top-0 z-50 w-full bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
+      <div className="sticky top-0 z-50 w-full bg-[#070606]/90 backdrop-blur-md border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto px-8 h-14 flex items-center justify-between">
           <Link
             href="/resources"
@@ -29,7 +29,7 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-70 transition-opacity">
-            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-[#ff6b35]">
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-[#FF7726]">
               <path d="M12 2L22 19H2L12 2Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               <circle cx="12" cy="13" r="2.5" fill="currentColor" />
             </svg>
@@ -45,9 +45,9 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
         <article className="flex-1 min-w-0 max-w-[680px]">
 
           {/* Header */}
-          <header className="mb-12 pb-10 border-b border-white/5">
+          <header className="mb-12 pb-10 border-b border-white/[0.06]">
             <div className="flex items-center gap-2.5 mb-5">
-              <span className="text-[#ff6b35] text-[10px] font-mono uppercase tracking-[0.25em]">Original</span>
+              <span className="text-[#FF7726] text-[10px] font-mono uppercase tracking-[0.25em]">Original</span>
               <span className="text-white/15 text-[10px] font-mono">·</span>
               <span className="text-white/30 text-[10px] font-mono uppercase tracking-[0.2em]">{readTime} min read</span>
             </div>
@@ -70,7 +70,7 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
                   <h1 className="text-2xl font-bold font-mono uppercase tracking-tight text-white mt-12 mb-5">{children}</h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="text-xl font-bold font-mono uppercase tracking-tight text-white mt-12 mb-5 pt-8 border-t border-white/5">{children}</h2>
+                  <h2 className="text-xl font-bold font-mono uppercase tracking-tight text-white mt-12 mb-5 pt-8 border-t border-white/[0.06]">{children}</h2>
                 ),
                 h3: ({ children }) => (
                   <h3 className="text-base font-bold text-white/90 mt-8 mb-3">{children}</h3>
@@ -99,11 +99,11 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
                 code: ({ children, className }) => {
                   const isBlock = className?.includes('language-');
                   return isBlock ? (
-                    <code className="block bg-white/5 border border-white/8 rounded-none p-5 text-sm font-mono text-white/70 overflow-x-auto my-6">
+                    <code className="block bg-white/[0.04] border border-white/[0.06] rounded-none p-5 text-sm font-mono text-white/70 overflow-x-auto my-6">
                       {children}
                     </code>
                   ) : (
-                    <code className="inline-block bg-white/8 px-1.5 py-0.5 font-mono text-[13px] text-[#ff6b35]/90 rounded-none">{children}</code>
+                    <code className="inline-block bg-white/[0.06] px-1.5 py-0.5 font-mono text-[13px] text-[#FF7726]/90 rounded-none">{children}</code>
                   );
                 },
                 pre: ({ children }) => (
@@ -112,9 +112,9 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
                 blockquote: ({ children }) => (
                   <blockquote className="border-l-2 border-white/15 pl-5 my-6 text-white/40 italic">{children}</blockquote>
                 ),
-                hr: () => <div className="my-10 border-t border-white/5" />,
+                hr: () => <div className="my-10 border-t border-white/[0.06]" />,
                 a: ({ href, children }) => (
-                  <a href={href} className="text-[#ff6b35]/80 hover:text-[#ff6b35] underline underline-offset-4 decoration-[#ff6b35]/30 transition-colors" target="_blank" rel="noopener noreferrer">
+                  <a href={href} className="text-[#FF7726]/80 hover:text-[#FF7726] underline underline-offset-4 decoration-[#FF5500]/30 transition-colors" target="_blank" rel="noopener noreferrer">
                     {children}
                   </a>
                 ),
@@ -132,7 +132,7 @@ export default function CheatsheetViewClient({ resource }: { resource: ResourceD
             <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/25 mb-5">
               On this page
             </p>
-            <nav className="flex flex-col gap-3.5 border-l border-white/5 pl-4">
+            <nav className="flex flex-col gap-3.5 border-l border-white/[0.06] pl-4">
               {toc.map((heading, i) => (
                 <a
                   key={i}

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { ExternalLink, BookOpen, Play, ArrowUpRight } from 'lucide-react';
+import { Navbar } from '@/components/Navbar';
 
 // ─── Types ──────────────────────────────────────────────────
 type ContentType = 'original' | 'link' | 'video';
@@ -143,21 +143,15 @@ const RESOURCES: ResourceEntry[] = [
 const CATEGORIES: Category[] = ['All', 'HLD', 'LLD', 'Networking', 'Databases', 'Videos'];
 
 const TYPE_META: Record<ContentType, { label: string; color: string; Icon: typeof BookOpen }> = {
-  original: { label: 'Original', color: 'text-[#ff6b35] border-[#ff6b35]/30 bg-[#ff6b35]/8', Icon: BookOpen },
-  link: { label: 'Article', color: 'text-white/50 border-white/10 bg-white/5', Icon: ExternalLink },
+  original: { label: 'Original', color: 'text-[#FF7726] border-[#FF5500]/30 bg-[#FF5500]/8', Icon: BookOpen },
+  link: { label: 'Article', color: 'text-white/50 border-white/[0.08] bg-white/[0.04]', Icon: ExternalLink },
   video: { label: 'Video', color: 'text-red-400/80 border-red-400/20 bg-red-400/5', Icon: Play },
 };
 
 // ─── Component ───────────────────────────────────────────────
 export default function ResourcesClient() {
-  const { data: session, isPending } = authClient.useSession();
-  const router = useRouter();
+  const { data: session } = authClient.useSession();
   const [activeCategory, setActiveCategory] = useState<Category>('All');
-
-  const handleSignOut = async () => {
-    await authClient.signOut();
-    router.refresh();
-  };
 
   const filtered = activeCategory === 'All'
     ? RESOURCES
@@ -167,41 +161,13 @@ export default function ResourcesClient() {
   const external = filtered.filter(r => r.type !== 'original');
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0a0a0a] font-sans text-white selection:bg-white/20">
-
-      {/* ── Navbar ─────────────────────────────────────────── */}
-      <header className="relative z-50 w-full px-8 md:px-12 py-8 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <div className="w-6 h-6 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-[#ff6b35]">
-              <path d="M12 2L22 19H2L12 2Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="12" cy="13" r="2.5" fill="currentColor" />
-            </svg>
-          </div>
-          <span className="font-bold tracking-widest text-base text-white">PREP-G</span>
-        </Link>
-
-        <nav className="hidden md:flex items-center bg-[#1a1a1a]/80 backdrop-blur-md border border-white/5 p-1 text-[13px] font-medium text-white/70">
-          <Link href="/problems" className="px-5 py-2 hover:text-white transition-colors">Problems</Link>
-          <Link href="/resources" className="px-5 py-2 text-white bg-white/10 transition-colors">Resources</Link>
-          {!isPending && !session ? (
-            <>
-              <Link href="/login" className="px-5 py-2 hover:text-white transition-colors">Log in</Link>
-              <Link href="/signup" className="px-5 py-2 hover:text-white transition-colors">Sign up</Link>
-            </>
-          ) : (
-            <>
-              <Link href="/profile" className="px-5 py-2 hover:text-white transition-colors">Profile</Link>
-              <button onClick={handleSignOut} className="px-5 py-2 hover:text-white transition-colors">Sign out</button>
-            </>
-          )}
-        </nav>
-      </header>
+    <div className="flex flex-col min-h-screen bg-[#070606] font-sans text-white selection:bg-white/20">
+      <Navbar session={session} />
 
       {/* ── Page Header ────────────────────────────────────── */}
-      <main className="flex-1 w-full max-w-4xl mx-auto px-6 pt-12 pb-28">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-6 pt-32 pb-28">
         <div className="mb-14">
-          <p className="text-[#ff6b35] font-mono text-xs uppercase tracking-[0.3em] mb-4 font-bold">
+          <p className="text-[#FF7726] font-mono text-xs uppercase tracking-[0.3em] mb-4 font-bold">
             Personal study notes
           </p>
           <h1 className="text-4xl md:text-5xl font-bold font-mono uppercase tracking-tight text-white mb-5">
@@ -221,8 +187,8 @@ export default function ResourcesClient() {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-1.5 text-xs font-mono uppercase tracking-widest border transition-all ${activeCategory === cat
-                  ? 'text-white border-white/30 bg-white/10'
-                  : 'text-white/40 border-white/5 bg-transparent hover:text-white/70 hover:border-white/15'
+                  ? 'text-white border-white/30 bg-white/[0.07]'
+                  : 'text-white/40 border-white/[0.06] bg-transparent hover:text-white/70 hover:border-white/15'
                   }`}
               >
                 {cat}
@@ -236,9 +202,9 @@ export default function ResourcesClient() {
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-6">
               <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/30">Written here</span>
-              <div className="flex-1 h-px bg-white/5" />
+              <div className="flex-1 h-px bg-white/[0.04]" />
             </div>
-            <div className="flex flex-col divide-y divide-white/5">
+            <div className="flex flex-col divide-y divide-white/[0.06]">
               {originals.map(item => (
                 <Link
                   key={item.id}
@@ -261,7 +227,7 @@ export default function ResourcesClient() {
                     </p>
                   </div>
                   <div className="shrink-0 flex flex-col items-end justify-between pt-1 gap-4">
-                    <div className="w-7 h-7 border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:text-white text-white/30 transition-all">
+                    <div className="w-7 h-7 border border-white/[0.08] flex items-center justify-center group-hover:border-white/30 group-hover:text-white text-white/30 transition-all">
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </div>
                     {item.readTime && (
@@ -281,9 +247,9 @@ export default function ResourcesClient() {
           <section>
             <div className="flex items-center gap-3 mb-6">
               <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/30">From around the web</span>
-              <div className="flex-1 h-px bg-white/5" />
+              <div className="flex-1 h-px bg-white/[0.04]" />
             </div>
-            <div className="flex flex-col divide-y divide-white/5">
+            <div className="flex flex-col divide-y divide-white/[0.06]">
               {external.map(item => {
                 const meta = TYPE_META[item.type];
                 const Icon = item.type === 'video' ? Play : ExternalLink;
@@ -316,7 +282,7 @@ export default function ResourcesClient() {
                       )}
                     </div>
                     <div className="shrink-0 flex flex-col items-end justify-between pt-1 gap-4">
-                      <div className="w-7 h-7 border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:text-white text-white/30 transition-all">
+                      <div className="w-7 h-7 border border-white/[0.08] flex items-center justify-center group-hover:border-white/30 group-hover:text-white text-white/30 transition-all">
                         <ExternalLink className="w-3 h-3" />
                       </div>
                       {item.readTime && (
@@ -340,7 +306,7 @@ export default function ResourcesClient() {
       </main>
 
       {/* ── Footer ─────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 py-8">
+      <footer className="border-t border-white/[0.06] py-8">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between text-[11px] font-mono text-white/20 uppercase tracking-widest">
           <span>Prep-G</span>
           <span>Study hard.</span>

@@ -1,11 +1,11 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
-import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import "dotenv/config";
+import { createPgPool } from "./db";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+const pool = createPgPool();
 const adapter = new PrismaPg(pool);
 const basePrisma = new PrismaClient({ adapter });
 
@@ -75,10 +75,14 @@ export const auth = betterAuth({
     },
   },
   socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    },
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          },
+        }
+      : {}),
   },
   advanced: {
     defaultCookieAttributes: {

@@ -29,9 +29,9 @@ interface Stats {
 }
 
 const DIFF_COLORS = {
-  EASY: '#00b8a3', 
-  MEDIUM: '#ffc01e',
-  HARD: '#ff375f', 
+  EASY: '#34d399',
+  MEDIUM: '#FF7726',
+  HARD: '#f87171',
 } as const;
 
 function timeAgo(dateString: string) {
@@ -78,13 +78,13 @@ function SegmentedRing({ byDifficulty, totalByDifficulty }: Pick<Stats, 'byDiffi
   const hardOffset = -(easyLen + medLen);
 
   return (
-    <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-5 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+    <div className="tactile-card rounded-2xl p-5 flex flex-col md:flex-row items-center gap-8 md:gap-12">
       {/* Ring */}
       <div className="relative w-28 h-28 shrink-0">
         <svg width="100%" height="100%" viewBox="0 0 100 100" className="-rotate-90">
           {/* Base Track */}
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#2a2a2a" strokeWidth="3" />
-          
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1A1613" strokeWidth="3" />
+
           {/* Segments */}
           {easyLen > 0 && (
             <circle cx={cx} cy={cy} r={r} fill="none" stroke={DIFF_COLORS.EASY} strokeWidth="4" strokeLinecap="round"
@@ -105,7 +105,7 @@ function SegmentedRing({ byDifficulty, totalByDifficulty }: Pick<Stats, 'byDiffi
             <span className="text-xs text-white/40">/{totalProblems}</span>
           </div>
           <div className="flex items-center gap-1 text-[10px] text-white/50 mt-1">
-             <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Solved
+            <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Solved
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@ function SegmentedRing({ byDifficulty, totalByDifficulty }: Pick<Stats, 'byDiffi
       {/* Breakdown List */}
       <div className="flex-1 w-full space-y-3">
         {(['EASY', 'MEDIUM', 'HARD'] as const).map((diff) => (
-          <div key={diff} className="bg-[#2a2a2a]/30 rounded-md p-2.5 px-3.5 flex flex-col">
+          <div key={diff} className="bg-[#1A1613]/30 rounded-md p-2.5 px-3.5 flex flex-col">
             <div className="flex justify-between items-center mb-1.5 text-xs">
               <span style={{ color: DIFF_COLORS[diff] }} className="font-medium">{diff.charAt(0) + diff.slice(1).toLowerCase()}</span>
               <span className="text-white/90 font-medium">
@@ -121,13 +121,13 @@ function SegmentedRing({ byDifficulty, totalByDifficulty }: Pick<Stats, 'byDiffi
               </span>
             </div>
             {/* Mini progress bar */}
-            <div className="w-full h-1 bg-[#2a2a2a] rounded-full overflow-hidden">
-              <div 
-                className="h-full rounded-full" 
-                style={{ 
+            <div className="w-full h-1 bg-[#1A1613] rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full"
+                style={{
                   width: `${totalByDifficulty[diff] > 0 ? (byDifficulty[diff] / totalByDifficulty[diff]) * 100 : 0}%`,
                   backgroundColor: DIFF_COLORS[diff]
-                }} 
+                }}
               />
             </div>
           </div>
@@ -140,7 +140,7 @@ function SegmentedRing({ byDifficulty, totalByDifficulty }: Pick<Stats, 'byDiffi
 // Heatmap logic
 function buildHeatmapData(heatmap: Stats['heatmap']) {
   const countByDate = new Map(heatmap.map((h) => [h.date, h.count]));
-  
+
   const today = new Date();
   const end = new Date(today);
   const start = new Date(today);
@@ -149,7 +149,7 @@ function buildHeatmapData(heatmap: Stats['heatmap']) {
 
   const weeks: { date: string; count: number }[][] = [];
   let current = new Date(start);
-  
+
   let currentStreak = 0;
   let maxStreak = 0;
   let activeDays = 0;
@@ -158,17 +158,17 @@ function buildHeatmapData(heatmap: Stats['heatmap']) {
   // Calculate streaks
   let tempDate = new Date(today);
   while (true) {
-      const dStr = tempDate.toISOString().split('T')[0];
-      if ((countByDate.get(dStr) || 0) > 0) {
-          currentStreak++;
-          tempDate.setDate(tempDate.getDate() - 1);
-      } else {
-          if (tempDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
-             tempDate.setDate(tempDate.getDate() - 1);
-             continue; // ignore if today is 0 for current streak
-          }
-          break;
+    const dStr = tempDate.toISOString().split('T')[0];
+    if ((countByDate.get(dStr) || 0) > 0) {
+      currentStreak++;
+      tempDate.setDate(tempDate.getDate() - 1);
+    } else {
+      if (tempDate.toISOString().split('T')[0] === today.toISOString().split('T')[0]) {
+        tempDate.setDate(tempDate.getDate() - 1);
+        continue; // ignore if today is 0 for current streak
       }
+      break;
+    }
   }
 
   let localStreak = 0;
@@ -178,7 +178,7 @@ function buildHeatmapData(heatmap: Stats['heatmap']) {
       const dateStr = current.toISOString().split('T')[0];
       const count = countByDate.get(dateStr) || 0;
       week.push({ date: dateStr, count });
-      
+
       if (count > 0) {
         localStreak++;
         activeDays++;
@@ -187,18 +187,18 @@ function buildHeatmapData(heatmap: Stats['heatmap']) {
       } else {
         localStreak = 0;
       }
-      
+
       current.setDate(current.getDate() + 1);
     }
     weeks.push(week);
   }
-  
+
   return { weeks, maxStreak, currentStreak, activeDays, submissionsInPastYear };
 }
 
 function cellColor(count: number) {
-  if (count === 0) return 'bg-[#2a2a2a]';
-  if (count === 1) return 'bg-[#0e4429]'; 
+  if (count === 0) return 'bg-[#1A1613]';
+  if (count === 1) return 'bg-[#0e4429]';
   if (count === 2) return 'bg-[#006d32]';
   if (count === 3) return 'bg-[#26a641]';
   return 'bg-[#39d353]';
@@ -206,7 +206,7 @@ function cellColor(count: number) {
 
 function Heatmap({ heatmap }: { heatmap: Stats['heatmap'] }) {
   const { weeks, maxStreak, currentStreak, activeDays, submissionsInPastYear } = buildHeatmapData(heatmap);
-  const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   const monthLabels: { label: string; col: number }[] = [];
   let lastMonth = -1;
@@ -219,7 +219,7 @@ function Heatmap({ heatmap }: { heatmap: Stats['heatmap'] }) {
   });
 
   return (
-    <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-5 flex-1 min-w-0 overflow-hidden">
+    <div className="tactile-card rounded-2xl p-5 flex-1 min-w-0 overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-5 text-sm">
         <span className="text-white/90 font-medium">
           {submissionsInPastYear} submissions in the past one year
@@ -243,7 +243,7 @@ function Heatmap({ heatmap }: { heatmap: Stats['heatmap'] }) {
         ))}
       </div>
 
-      <div className="flex gap-[3px] overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#333] scrollbar-track-transparent">
+      <div className="flex gap-[3px] overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#2a241f] scrollbar-track-transparent">
         {weeks.map((week, wi) => (
           <div key={wi} className="flex flex-col gap-[3px]">
             {week.map((cell) => (
@@ -262,8 +262,8 @@ function Heatmap({ heatmap }: { heatmap: Stats['heatmap'] }) {
 
 function RecentAttempts({ recentAttempts }: { recentAttempts: Stats['recentAttempts'] }) {
   return (
-    <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg overflow-hidden flex flex-col">
-      <div className="flex items-center gap-6 px-5 py-3 border-b border-[#2a2a2a] bg-[#1e1e1e]/50">
+    <div className="tactile-card rounded-2xl overflow-hidden flex flex-col">
+      <div className="flex items-center gap-6 px-5 py-3 border-b border-white/[0.06] bg-white/[0.02]">
         <div className="flex items-center gap-2 text-white/90 text-sm font-medium">
           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
           Recent AC
@@ -273,20 +273,20 @@ function RecentAttempts({ recentAttempts }: { recentAttempts: Stats['recentAttem
           List
         </div>
       </div>
-      
+
       {recentAttempts.length === 0 ? (
         <div className="p-8 text-center text-white/40 text-sm">
           No recent attempts.
         </div>
       ) : (
-        <div className="divide-y divide-[#2a2a2a]">
+        <div className="divide-y divide-[#1A1613]">
           {recentAttempts.map(a => (
-            <Link 
-              key={a.id} 
+            <Link
+              key={a.id}
               href={`/problems/${a.problemId}/attempt/${a.id}`}
-              className="flex items-center justify-between px-5 py-3.5 hover:bg-[#2a2a2a]/30 transition-colors group"
+              className="flex items-center justify-between px-5 py-3.5 hover:bg-[#1A1613]/30 transition-colors group"
             >
-              <span className="text-white/80 font-medium text-sm group-hover:text-white transition-colors">
+              <span className="text-white/80 font-medium text-sm group-hover:text-[#FF7726] transition-colors">
                 {a.problemTitle}
               </span>
               <span className="text-white/40 text-xs">
@@ -306,49 +306,49 @@ function LeftSidebar({ session, stats }: { session: any, stats: Stats }) {
   return (
     <div className="flex flex-col gap-4">
       {/* Profile Info */}
-      <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-5 flex flex-col">
+      <div className="tactile-card rounded-2xl p-5 flex flex-col">
         <div className="flex gap-4 items-center md:items-start md:flex-col">
-          <div className="w-20 h-20 rounded-xl bg-[#2a2a2a] flex items-center justify-center shrink-0">
-             <span className="text-3xl font-bold text-white/80">
-                {avatarLetter}
-             </span>
+          <div className="w-20 h-20 rounded-xl bg-[#1A1613] flex items-center justify-center shrink-0">
+            <span className="text-3xl font-bold text-white/80">
+              {avatarLetter}
+            </span>
           </div>
           <div>
             <h1 className="text-lg font-bold text-white leading-tight">{session.user.name || 'Anonymous'}</h1>
             <p className="text-sm text-white/40">{session.user.email}</p>
           </div>
         </div>
-        
-        <button className="w-full mt-5 py-1.5 bg-[#2a2a2a] hover:bg-[#333] text-emerald-500 font-medium text-sm rounded transition-colors border border-emerald-500/10">
+
+        <button className="w-full mt-5 py-1.5 btn-ghost text-sm font-medium rounded-lg">
           Edit Profile
         </button>
 
-        <div className="mt-6 space-y-4 pt-6 border-t border-[#2a2a2a]">
-           <h3 className="text-white/80 font-medium text-sm mb-3">Community Stats</h3>
-           
-           <div className="flex items-center justify-between text-sm group">
-              <div className="flex items-center gap-2 text-white/60 group-hover:text-white transition-colors">
-                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                 Attempts
-              </div>
-              <span className="text-white font-medium">{stats.totalAttempts}</span>
-           </div>
+        <div className="mt-6 space-y-4 pt-6 border-t border-white/[0.06]">
+          <h3 className="text-white/80 font-medium text-sm mb-3">Community Stats</h3>
 
-           <div className="flex items-center justify-between text-sm group">
-              <div className="flex items-center gap-2 text-white/60 group-hover:text-white transition-colors">
-                 <TrendingUp className="w-4 h-4 text-emerald-400" />
-                 Avg Score
-              </div>
-              <span className="text-white font-medium">{stats.averageScore > 0 ? `${stats.averageScore}%` : '—'}</span>
-           </div>
+          <div className="flex items-center justify-between text-sm group">
+            <div className="flex items-center gap-2 text-white/60 group-hover:text-white transition-colors">
+              <CheckCircle2 className="w-4 h-4 text-blue-400" />
+              Attempts
+            </div>
+            <span className="text-white font-medium">{stats.totalAttempts}</span>
+          </div>
 
-           <div className="flex items-center justify-between text-sm group">
-              <div className="flex items-center gap-2 text-white/60 group-hover:text-white transition-colors">
-                 <Lightbulb className="w-4 h-4 text-amber-400" />
-                 Hints Used
-              </div>
-              <span className="text-white font-medium">{stats.totalHintsUsed}</span>
-           </div>
+          <div className="flex items-center justify-between text-sm group">
+            <div className="flex items-center gap-2 text-white/60 group-hover:text-white transition-colors">
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
+              Avg Score
+            </div>
+            <span className="text-white font-medium">{stats.averageScore > 0 ? `${stats.averageScore}%` : '—'}</span>
+          </div>
+
+          <div className="flex items-center justify-between text-sm group">
+            <div className="flex items-center gap-2 text-white/60 group-hover:text-white transition-colors">
+              <Lightbulb className="w-4 h-4 text-amber-400" />
+              Hints Used
+            </div>
+            <span className="text-white font-medium">{stats.totalHintsUsed}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -379,7 +379,7 @@ export function ProfileClient() {
 
   if (sessionPending || loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+      <div className="min-h-screen bg-[#070606] flex items-center justify-center">
         <Loader2 className="w-7 h-7 text-white/30 animate-spin" />
       </div>
     );
@@ -387,18 +387,18 @@ export function ProfileClient() {
 
   if (error || !stats || !session) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white/40 text-sm">
+      <div className="min-h-screen bg-[#070606] flex items-center justify-center text-white/40 text-sm">
         {error || 'Something went wrong.'}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#070606] text-white">
       <Navbar />
 
-      <main className="max-w-[1100px] mx-auto px-4 md:px-8 py-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
-        
+      <main className="max-w-[1100px] mx-auto px-4 md:px-8 pt-24 pb-12 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
+
         {/* LEFT COLUMN */}
         <LeftSidebar session={session} stats={stats} />
 

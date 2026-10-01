@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: prep-goat-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: prepgoat
+      POSTGRES_PASSWORD: prepgoat
+      POSTGRES_DB: prepgoat
+    volumes:
+      - prep_goat_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prepgoat -d prepgoat"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  prep_goat_pgdata:

@@ -73,7 +73,7 @@ function CustomTooltip({ active, payload }: any) {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="bg-[#1a1a1a] border border-white/10 rounded-md px-3 py-2 text-xs shadow-lg max-w-[200px]">
+    <div className="bg-[#141211] border border-white/[0.08] rounded-md px-3 py-2 text-xs shadow-lg max-w-[200px]">
       <p className="text-white/90 font-semibold mb-1">{d.fullCriterion}</p>
       <p className="text-white/50 font-mono">{d.stage}</p>
       <p className={`font-bold font-mono mt-1 ${scoreColor(d.score)}`}>{d.score} / 5</p>
@@ -87,7 +87,7 @@ function StageSection({ result }: { result: EvaluationResult }) {
   const stageMax = result.feedback.length * 5;
 
   return (
-    <div className="border border-white/10 rounded-lg overflow-hidden">
+    <div className="border border-white/[0.08] rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between px-4 py-3 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
@@ -108,7 +108,7 @@ function StageSection({ result }: { result: EvaluationResult }) {
       </button>
 
       {open && (
-        <div className="divide-y divide-white/5">
+        <div className="divide-y divide-white/[0.06]">
           {result.feedback.map((fb, i) => (
             <div key={i} className={`px-4 py-3 border-l-2 ${fb.score >= 4 ? 'border-emerald-500/40' : fb.score === 3 ? 'border-amber-500/40' : 'border-red-500/40'}`}>
               <div className="flex items-baseline gap-2 mb-1">
@@ -118,7 +118,7 @@ function StageSection({ result }: { result: EvaluationResult }) {
                 <span className="text-sm font-semibold text-white/85">{fb.criterion}</span>
               </div>
               {fb.evidence && (
-                <div className="my-2 pl-3 border-l border-white/10 text-xs font-mono text-white/50 bg-white/[0.02] py-1 rounded-sm">
+                <div className="my-2 pl-3 border-l border-white/[0.08] text-xs font-mono text-white/50 bg-white/[0.02] py-1 rounded-sm">
                   {fb.evidence}
                 </div>
               )}
@@ -147,7 +147,7 @@ export function ScoreCard({ evaluation }: ScoreCardProps) {
       <div className="max-w-3xl mx-auto space-y-8">
 
         {/* Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-white/10">
+        <div className="flex items-center justify-between pb-6 border-b border-white/[0.08]">
           <h2 className="text-xl font-bold text-white">Score Overview</h2>
           <div className="flex items-center gap-3">
             <span className="text-3xl font-bold font-mono text-white">{total}</span>
@@ -159,7 +159,7 @@ export function ScoreCard({ evaluation }: ScoreCardProps) {
         </div>
 
         {/* Radar Chart */}
-        <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6">
+        <div className="bg-white/[0.02] border border-white/[0.08] rounded-xl p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 font-mono mb-4">
             Skill Radar
           </p>
@@ -173,11 +173,11 @@ export function ScoreCard({ evaluation }: ScoreCardProps) {
               <Radar
                 name="Score"
                 dataKey="score"
-                stroke="#ff6b35"
-                fill="#ff6b35"
+                stroke="#FF5500"
+                fill="#FF5500"
                 fillOpacity={0.15}
                 strokeWidth={1.5}
-                dot={{ r: 3, fill: '#ff6b35', strokeWidth: 0 }}
+                dot={{ r: 3, fill: '#FF5500', strokeWidth: 0 }}
               />
               <Tooltip content={<CustomTooltip />} />
             </RadarChart>

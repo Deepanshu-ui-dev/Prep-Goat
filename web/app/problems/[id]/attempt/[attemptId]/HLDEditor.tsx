@@ -224,17 +224,17 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#0a0a0a]">
+      <div className="h-screen flex items-center justify-center bg-[#070606]">
         <Loader2 className="w-8 h-8 animate-spin text-white/40" />
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-[#0a0a0a] text-white font-sans selection:bg-white/20">
+    <div className="h-screen flex flex-col overflow-hidden bg-[#070606] text-white font-sans selection:bg-white/20">
 
       {/* ── Top bar ── */}
-      <header className="flex items-center justify-between px-5 py-3 border-b border-white/10 bg-[#0a0a0a] shrink-0">
+      <header className="flex items-center justify-between px-5 py-3 border-b border-white/[0.08] bg-[#070606] shrink-0">
         <div className="flex items-center gap-3">
           <Link
             href={`/problems/${problemId}`}
@@ -248,7 +248,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
           <span className="ml-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-sky-500/10 text-sky-400 border border-sky-500/20">
             HLD
           </span>
-          <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-white/10 text-white/80 border border-white/10">
+          <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-white/[0.07] text-white/80 border border-white/[0.08]">
             {attemptStatus}
           </span>
         </div>
@@ -264,11 +264,11 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
             <button
               onClick={saveTextStages}
               disabled={saveStatus === 'saving'}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded bg-[#2a2a2a] hover:bg-[#333] border border-white/5 text-sm font-medium text-white/90 transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded bg-[#1A1613] hover:bg-[#2a241f] border border-white/[0.06] text-sm font-medium text-white/90 transition-all disabled:opacity-50"
             >
               {saveStatus === 'saving' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> :
-               saveStatus === 'saved'  ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> :
-               <Save className="w-3.5 h-3.5" />}
+                saveStatus === 'saved' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> :
+                  <Save className="w-3.5 h-3.5" />}
               {saveStatus === 'saving' ? 'Saving…' : saveStatus === 'saved' ? 'Saved!' : 'Save Draft'}
             </button>
           )}
@@ -276,7 +276,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
             <button
               onClick={() => startTransition(() => startAttempt(problemId))}
               disabled={isPending}
-              className="px-3.5 py-1.5 rounded bg-[#ff6b35] hover:bg-[#e05a2a] text-white text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="px-3.5 py-1.5 rounded bg-[#FF5500] hover:bg-[#e05a2a] text-white text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-50"
             >
               {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               Re-attempt
@@ -285,7 +285,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
             <button
               onClick={canGoNext ? () => setActiveStage(STAGES[activeIndex + 1]) : handleSubmit}
               disabled={submitting || attemptStatus !== 'DRAFT'}
-              className="px-3.5 py-1.5 rounded bg-[#ff6b35] hover:bg-[#e05a2a] text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-3.5 py-1.5 rounded bg-[#FF5500] hover:bg-[#e05a2a] text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {submitting && !canGoNext ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
               {attemptStatus === 'DRAFT'
@@ -302,10 +302,10 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
         {/* LEFT SIDEBAR — Problem context */}
         <aside
           style={{ width: sidebarWidth }}
-          className="shrink-0 flex flex-col overflow-hidden relative border-r border-white/10 bg-[#0a0a0a]"
+          className="shrink-0 flex flex-col overflow-hidden relative border-r border-white/[0.08] bg-[#070606]"
         >
           {/* Stage navigation dots */}
-          <div className="flex items-center justify-center gap-4 h-12 border-b border-white/10 shrink-0 bg-white/5">
+          <div className="flex items-center justify-center gap-4 h-12 border-b border-white/[0.08] shrink-0 bg-white/[0.04]">
             <button
               onClick={() => canGoBack && setActiveStage(STAGES[activeIndex - 1])}
               disabled={!canGoBack}
@@ -320,11 +320,10 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
                   key={stage}
                   onClick={() => setActiveStage(stage)}
                   title={STAGE_META[stage].label}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    activeStage === stage
-                      ? 'bg-[#ff6b35] ring-2 ring-[#ff6b35]/30 w-2.5 h-2.5'
-                      : 'bg-white/30 hover:bg-white/50'
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-all ${activeStage === stage
+                    ? 'bg-[#FF5500] ring-2 ring-[#FF5500]/30 w-2.5 h-2.5'
+                    : 'bg-white/30 hover:bg-white/50'
+                    }`}
                 />
               ))}
             </div>
@@ -341,7 +340,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
           {/* Scrollable context */}
           <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-8">
             <div className="text-left">
-              <span className="inline-flex px-2 py-0.5 bg-white/5 rounded-sm border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/60 mb-4 font-mono">
+              <span className="inline-flex px-2 py-0.5 bg-white/[0.04] rounded-sm border border-white/[0.08] text-[10px] font-bold uppercase tracking-widest text-white/60 mb-4 font-mono">
                 {STAGE_META[activeStage].label}
               </span>
               <p className="text-white/90 text-sm leading-relaxed whitespace-pre-line font-medium">
@@ -349,7 +348,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
               </p>
             </div>
 
-            <div className="border-t border-white/10 pt-6 text-left">
+            <div className="border-t border-white/[0.08] pt-6 text-left">
               <h3 className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 font-mono">
                 Problem Context
               </h3>
@@ -362,7 +361,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
                 <ul className="space-y-3">
                   {problem.requirements.map((r, i) => (
                     <li key={i} className="flex gap-3 text-sm text-white/70">
-                      <span className="text-[#ff6b35] font-bold shrink-0">{i + 1}.</span>
+                      <span className="text-[#FF7726] font-bold shrink-0">{i + 1}.</span>
                       <span className="leading-relaxed">{r}</span>
                     </li>
                   ))}
@@ -376,7 +375,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
                 <ul className="space-y-3">
                   {problem.constraints.map((c, i) => (
                     <li key={i} className="flex gap-3 text-sm text-white/70">
-                      <span className="text-[#ff6b35] font-bold shrink-0">{i + 1}.</span>
+                      <span className="text-[#FF7726] font-bold shrink-0">{i + 1}.</span>
                       <span className="leading-relaxed">{c}</span>
                     </li>
                   ))}
@@ -390,7 +389,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
                 <ul className="space-y-3">
                   {problem.testCases.map((tc, i) => (
                     <li key={i} className="flex gap-3 text-sm text-white/70">
-                      <span className="text-[#ff6b35] font-bold shrink-0">{i + 1}.</span>
+                      <span className="text-[#FF7726] font-bold shrink-0">{i + 1}.</span>
                       <span className="leading-relaxed">{tc}</span>
                     </li>
                   ))}
@@ -404,7 +403,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
                 <ul className="space-y-3">
                   {problem.extensibilityHooks.map((h, i) => (
                     <li key={i} className="flex gap-3 text-sm text-white/70">
-                      <span className="text-[#ff6b35] font-bold shrink-0">{i + 1}.</span>
+                      <span className="text-[#FF7726] font-bold shrink-0">{i + 1}.</span>
                       <span className="leading-relaxed">{h}</span>
                     </li>
                   ))}
@@ -424,7 +423,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
 
         {/* DRAG HANDLE */}
         <div
-          className="w-1 cursor-col-resize bg-transparent hover:bg-white/10 active:bg-white/20 shrink-0 transition-colors z-10"
+          className="w-1 cursor-col-resize bg-transparent hover:bg-white/[0.07] active:bg-white/20 shrink-0 transition-colors z-10"
           onMouseDown={() => {
             isDragging.current = true;
             document.body.style.cursor = 'col-resize';
@@ -432,34 +431,34 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
         />
 
         {/* RIGHT — Canvas / Text editor / Evaluation */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-[#0a0a0a]">
+        <div className="flex-1 flex flex-col overflow-hidden bg-[#070606]">
 
           {/* Evaluation tab bar (shown once submitted) */}
           {evaluation && (
-            <div className="flex items-center gap-8 border-b border-white/10 px-8 pt-6 shrink-0 bg-[#0a0a0a]">
+            <div className="flex items-center gap-8 border-b border-white/[0.08] px-8 pt-6 shrink-0 bg-[#070606]">
               <button
                 onClick={() => setResultTab('scorecard')}
-                className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'scorecard' ? 'border-[#ff6b35] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
+                className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'scorecard' ? 'border-[#FF5500] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
               >
                 Score Overview
               </button>
               <button
                 onClick={() => setResultTab('evaluation')}
-                className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'evaluation' ? 'border-[#ff6b35] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
+                className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'evaluation' ? 'border-[#FF5500] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
               >
                 Full Breakdown
               </button>
               {sampleSolution && (
                 <button
                   onClick={() => setResultTab('solution')}
-                  className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'solution' ? 'border-[#ff6b35] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
+                  className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'solution' ? 'border-[#FF5500] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
                 >
                   Sample Solution
                 </button>
               )}
               <button
                 onClick={() => setResultTab('submission')}
-                className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'submission' ? 'border-[#ff6b35] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
+                className={`pb-3 text-sm font-medium border-b-2 transition-colors ${resultTab === 'submission' ? 'border-[#FF5500] text-white' : 'border-transparent text-white/40 hover:text-white/70'}`}
               >
                 My Submission
               </button>
@@ -472,29 +471,29 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
           ) : evaluation && resultTab === 'solution' && sampleSolution ? (
             <div className="flex-1 overflow-y-auto p-8">
               <div className="max-w-3xl mx-auto">
-                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
+                <div className="flex items-center justify-between pb-6 border-b border-white/[0.08] mb-6">
                   <h2 className="text-xl font-bold text-white">Sample Solution</h2>
                   <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded text-xs font-bold uppercase tracking-wider font-mono">Reference</span>
                 </div>
-                <pre className="font-mono text-sm text-white/80 leading-relaxed whitespace-pre-wrap bg-white/[0.03] border border-white/10 rounded-xl p-6">{sampleSolution}</pre>
+                <pre className="font-mono text-sm text-white/80 leading-relaxed whitespace-pre-wrap bg-white/[0.03] border border-white/[0.08] rounded-xl p-6">{sampleSolution}</pre>
               </div>
             </div>
           ) : evaluation && resultTab === 'evaluation' ? (
             <div className="flex-1 overflow-y-auto p-8">
               <div className="max-w-3xl mx-auto space-y-8">
-                <div className="flex items-center justify-between pb-6 border-b border-white/10">
+                <div className="flex items-center justify-between pb-6 border-b border-white/[0.08]">
                   <h2 className="text-xl font-bold text-white">Evaluation Results</h2>
-                  <div className="px-3 py-1 bg-white/5 text-[#ff6b35] border border-white/10 rounded text-xs font-bold uppercase tracking-wider font-mono">Completed</div>
+                  <div className="px-3 py-1 bg-white/[0.04] text-[#FF7726] border border-white/[0.08] rounded text-xs font-bold uppercase tracking-wider font-mono">Completed</div>
                 </div>
                 {evaluation.map((res: any, i: number) => (
                   <div key={i} className="space-y-4">
-                    <h3 className="text-sm font-bold text-white/90 uppercase tracking-widest border-b border-white/10 pb-2">{res.stageType}</h3>
+                    <h3 className="text-sm font-bold text-white/90 uppercase tracking-widest border-b border-white/[0.08] pb-2">{res.stageType}</h3>
                     <div className="grid gap-4">
                       {res.feedback.map((item: any, j: number) => {
                         const isPass = item.score >= 4;
                         const isWarn = item.score === 3;
                         return (
-                          <div key={j} className="text-sm p-4 rounded-md border border-white/10 bg-white/5 space-y-3">
+                          <div key={j} className="text-sm p-4 rounded-md border border-white/[0.08] bg-white/[0.04] space-y-3">
                             <div className="flex items-baseline gap-2 mb-1">
                               <span className={`font-mono text-xs font-bold ${isPass ? 'text-emerald-500' : isWarn ? 'text-amber-500' : 'text-red-500'}`}>
                                 [{item.score}/5]
@@ -522,7 +521,7 @@ export function HLDEditor({ attemptId, problemId, problem }: HLDEditorProps) {
             // ── Active working view ──
             <>
               {/* Stage label bar */}
-              <div className="flex items-center justify-between px-6 h-12 border-b border-white/10 bg-white/5 shrink-0">
+              <div className="flex items-center justify-between px-6 h-12 border-b border-white/[0.08] bg-white/[0.04] shrink-0">
                 <span className="text-xs font-bold font-mono text-white/50 uppercase tracking-wider">
                   {STAGE_META[activeStage].label}
                 </span>

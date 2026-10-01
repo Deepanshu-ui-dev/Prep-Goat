@@ -20,7 +20,7 @@ export function HintPanel({ attemptId, totalHints, initialUnlockedHints, status 
 
   const handleUnlock = async () => {
     if (!canUnlock) return;
-    
+
     if (!confirm('Unlocking a hint will deduct 5 points from your final evaluation score. Are you sure?')) {
       return;
     }
@@ -34,7 +34,7 @@ export function HintPanel({ attemptId, totalHints, initialUnlockedHints, status 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hintIndex: nextIndex })
       });
-      
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
@@ -49,13 +49,13 @@ export function HintPanel({ attemptId, totalHints, initialUnlockedHints, status 
   if (totalHints === 0) return null;
 
   return (
-    <div className="text-left mt-8 pt-6 border-t border-white/10">
+    <div className="text-left mt-8 pt-6 border-t border-white/[0.08]">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-[10px] font-bold text-white/50 uppercase tracking-widest font-mono flex items-center gap-2">
           <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
           Hints ({unlockedHints.length} / {totalHints})
         </h3>
-        
+
         {canUnlock && (
           <button
             onClick={handleUnlock}
